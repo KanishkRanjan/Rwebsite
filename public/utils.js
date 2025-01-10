@@ -1,4 +1,4 @@
-const api_url = 'http://localhost:3000/api';
+const api_url = 'https://rserver.onrender.com/api';
 const sendFetchRequest = async (url , type , payload) => {
     if(!url){
         console.error("URL was not provided!");
