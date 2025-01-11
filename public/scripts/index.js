@@ -2,7 +2,6 @@ const potd = document.querySelector("#potd");
 const archive = document.querySelector("#archive"); 
 
 const  createProblemRow = async (problemData) => {
-  const statics = await sendFetchRequest(`/problems/getsolvecount?contestId=${problemData.contestId}&problemIndex=${problemData.problemIndex}`)
   console.log(problemData);
 
   const tr = document.createElement("tr");
@@ -10,7 +9,7 @@ const  createProblemRow = async (problemData) => {
   const problemCell = document.createElement("td");
   problemCell.className = "problem";
   const problemLink = document.createElement("a");
-  problemLink.href = problemData.url;
+  problemLink.href = problemData.link;
   problemLink.textContent = problemData.name;
   problemCell.appendChild(problemLink);
   tr.appendChild(problemCell);
@@ -18,7 +17,8 @@ const  createProblemRow = async (problemData) => {
 
   const info = document.createElement("td") ;
   info.className = "info"
-  info.innerText = `${statics.totalSolve-statics.participantSolve}/${statics.participantSolve}/${statics.totalSolve}`
+  info.innerText = "Loading"
+  info.id = `problem-${problemData._id}`
   tr.appendChild(info)
   const tagsCell1 = document.createElement("td");
   tagsCell1.className = "tags";
@@ -42,12 +42,12 @@ const  createProblemRow = async (problemData) => {
   return tr;
 }
 
+// const data = await sendFetchRequest("/problems/getproblems/450005");
 
 (async ()=>{
   let potdlist = []
   let archivelist = []
 
-  const data = await sendFetchRequest("/problems/getproblems/450005");
 
 
   for(let i =0  ;i < data.length ; i++){
@@ -80,4 +80,9 @@ const  createProblemRow = async (problemData) => {
   }
   console.log("this is beta");
   
-})()
+})().then( async ()=>{
+  for(let i = 0 ; i < data.length ; i++){
+    const statics = await sendFetchRequest(`/problems/getsolvecount?contestId=${data[i].contestId}&problemIndex=${data[i].problemIndex}`)
+    document.querySelector(`#problem-${data[i]._id}`).innerText = `${statics.totalSolve-statics.participantSolve}/${statics.participantSolve}/${statics.totalSolve}`    
+  }
+})
