@@ -80,6 +80,7 @@ app.get("/dashboard", isAuthenticated, async (req: Request, res: Response) => {
   res.render("admin/dashboard", {
     message: undefined,
     data: Array.from(data.values()),
+    hostLink : process.env.HOST_LINK
   });
 });
 
@@ -103,7 +104,7 @@ app.post("/dashboard", isAuthenticated, async (req: Request, res: Response) => {
 
 app.get("/problems", isAuthenticated, async (req: Request, res: Response) => {
   const data = await backFetcher("/problems/getproblems/455");
-  res.render("admin/problems", { title: "Problem of Day", data });
+  res.render("admin/problems", { title: "Problem of Day", data , hostLink : process.env.HOST_LINK });
 });
 
 app.post("/problems", isAuthenticated, async (req: Request, res: Response) => {
@@ -127,7 +128,7 @@ app.get("/members", async (req: Request, res: Response) => {
 
 app.get("/", async (req: Request, res: Response) => {
   const data = await backFetcher("/problems/getproblems/450005");
-  res.render("index", { title: "Algonauts", data });
+  res.render("index", { title: "Algonauts", data , hostLink : process.env.HOST_LINK});
 });
 
 app.get("/rulebook", (req: Request, res: Response) => {
@@ -136,16 +137,14 @@ app.get("/rulebook", (req: Request, res: Response) => {
 
 app.get("/leaderboard", async (req: Request, res: Response) => {
   const obj = await backFetcher("/leaderboard/getuserlist");
-  // console.log(obj);
-  
-  res.render("leaderboard", { title: "Algonauts", obj });
+  res.render("leaderboard", { title: "Algonauts", obj, hostLink : process.env.HOST_LINK });
 });
 
 app.get("/calendar", (req: Request, res: Response) => {
   res.render("calendar", { title: "Algonauts" });
 });
-
-app.get("/updateall", isAuthenticated, async (req: Request, res: Response) => {
+//add auth
+app.get("/updateall", async (req: Request, res: Response) => {
   await updateAll();
   res.status(200).send("Update was successful");
 });

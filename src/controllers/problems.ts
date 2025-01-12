@@ -23,7 +23,6 @@ export const deleteProblem = async ( req:Request , res : Response , next : NextF
 
 export const addProblem =  async (req: Request, res: Response , next :NextFunction) => {
     try {
-        console.log(req.body);
         
         let { name, problemIndex,contestId, tags,questionLink, difficulty, date }: any = req.body;
         
@@ -71,7 +70,6 @@ export const getSolveCount = async (req:Request , res:Response , next :NextFunct
 
         for(let i = 0 ; i < userData.length ; i++){
             const extracted = userData[i].ProgressMatrixes.get('codeforces') ; 
-            console.log(extracted);
             
             const apiUrl = `https://codeforces.com/api/user.status?handle=${extracted.username}`
             try{
@@ -86,16 +84,11 @@ export const getSolveCount = async (req:Request , res:Response , next :NextFunct
                     if(result[j].contestId === parseInt(contestId as string) && result[j].problem.index === problemIndex && result[j].verdict =="OK"  )
                     {
                         if(userData[i].post == 'participant') participantSolve++;               
-                        // console.log(result[j]);
-                                 
                         totalSolve++;
                     } 
-                    
                 }
-
                 
             } catch (error) {
-                //   console.error("Error fetching API:", error.message);
                   throw error;
                 }
             delay(1000);
@@ -104,13 +97,6 @@ export const getSolveCount = async (req:Request , res:Response , next :NextFunct
     catch (error: any) {
         return next(new CustomError('Internal server error', 500));
     }
-
-    // let totalSolve:number = 0 ;
-    // let participantSolve:number = 0 ;
-    console.log(contestId , problemIndex );
-    
-    console.log(totalSolve , participantSolve);
-    
 
     res.status(200).send({totalSolve , participantSolve})
 }

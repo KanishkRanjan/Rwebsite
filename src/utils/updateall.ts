@@ -11,8 +11,10 @@ const updateAll = async ()=>{
     allusers.forEach(async (alluser:any) =>{
         for(let key in alluser.ProgressMatrixes){
             const info =  await backfetcher(`/scrapper/${alluser.ProgressMatrixes?.[key]?.name}/${alluser.ProgressMatrixes?.[key]?.username}`) ;
-            console.log("THis is info: ",info);
-            
+            if(info.success === false){
+                console.log("Failed getting data")
+                return
+            }
             for(let pKey in info){
                 const {error} = await backfetcher('/leaderboard/updateActivity',"PATCH",{
                             userid:alluser?._id,
@@ -22,8 +24,8 @@ const updateAll = async ()=>{
                             date : getFormatedDate(new Date()) ,
                             score: calculate(alluser.ProgressMatrixes?.[key]?.name,info) 
                     }) ;
-                console.log(error);
-
+                // console.log(error);
+                    
                 // if(error){
                 //     return error ;
                 // }

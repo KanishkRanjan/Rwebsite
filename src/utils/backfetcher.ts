@@ -14,7 +14,6 @@ const sendFetchRequest = async (
 
   try {
     url = api_url + url;
-  console.log(url);
 
     const response = await fetch(url, {
       method: type || "GET",
@@ -25,6 +24,9 @@ const sendFetchRequest = async (
     });
     
     if (!response.ok) {
+      console.log(url);
+      console.log(await response.json());
+      console.log(JSON.stringify(payload))
       throw new Error(
         `HTTP error! status: ${response.status} - ${response.statusText}`
       );

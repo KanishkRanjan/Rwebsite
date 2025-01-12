@@ -1,5 +1,5 @@
 
-const axios = require('axios');
+import axios from 'axios';
 
 const LEETCODE_GRAPHQL_URL = 'https://leetcode.com/graphql';
 

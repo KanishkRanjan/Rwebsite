@@ -15,8 +15,6 @@ export const addUser = async (
   const body = req.body;
   if (!body.name) {
     const error = new CustomError("Name was not provided", 400);
-    console.log("hi");
-
     next(error);
     return;
   }
@@ -25,10 +23,9 @@ export const addUser = async (
     next(error);
     return;
   }
-  console.log(body.ProgressMatrixes.codeforces.aggregatedSolveCounts);
 
   const { error } = UserValidator.validate(body);
-  console.log(error);
+  // console.log(error);
 
   for (const key in body.ProgressMatrixes) {
     if (body.ProgressMatrixes[key].aggregatedSolveCounts.total == undefined) {
@@ -82,9 +79,7 @@ export const updateActivity = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  // if(lastUpdatedDate ==  getFormatedDate(new Date())){
-  //   return next(new CustomError('You can only call update function ones a day', 401));
-  // }
+    
   const {
     userid,
     platformname,
@@ -146,11 +141,12 @@ export const updateActivity = async (
     }
     const activity: IDailyUserActivity | undefined =
       platform.DailyUserActivity.get(updateDate);
-    console.log(activity);
+    console.log("This is activity: ",activity);
 
     if (activity) {
-      if (!["easy", "medium", "hard", "total"].includes(questionType)) {
-        next(new CustomError("Invalid question type.", 400));
+      
+      if (!["easy", "medium", "hard", "total"].includes(questionType)) {        
+        next(new CustomError("Invalid question type. ", 400));
         return;
       }
 
@@ -162,28 +158,17 @@ export const updateActivity = async (
       // const previousSolved = previousActivity[questionType as keyof IDailyUserActivity] || 0;
       const currentSolveCount =
         platform.aggregatedSolveCounts.get(questionType) || 0;
-      const difference =
-        solved -
-        currentSolveCount +
-        (activity[questionType as keyof IDailyUserActivity] || 0);
-      if (difference < 0) {
-        next(new CustomError("Incorrect question type.", 400));
+      const difference = solved - currentSolveCount + (activity[questionType as keyof IDailyUserActivity] || 0);
+        
+        if (difference < 0) {
+        next(new CustomError("solved is negative", 400));
         return;
       }
 
-      console.log(
-        currentSolveCount,
-        difference,
-        activity[questionType as keyof IDailyUserActivity]
-      );
-
       platform.aggregatedSolveCounts.set(questionType, solved);
-
       activity[questionType as keyof IDailyUserActivity] = difference;
-
-      activity.total =
-        (activity.easy || 0) + (activity.medium || 0) + (activity.hard || 0);
       platform.score = score;
+
       await user.save();
 
       next(new CustomResponse("Activity updated successfully.", 200));
@@ -194,8 +179,8 @@ export const updateActivity = async (
           500
         )
       );
-      return;
     }
+    return;
   } catch (error) {
     next(new CustomError("An error occurred while updating activity.", 500));
   }
@@ -255,7 +240,6 @@ export const getuserlist = async (
 
     res.status(200).json(sortedUsers);
   } catch (error) {
-    console.log(error);
     next(new CustomError("Error fetching users", 500));
   }
 };
