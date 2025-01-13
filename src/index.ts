@@ -11,7 +11,9 @@ import backFetcher from "./utils/backfetcher";
 
 import errorHandler from "./utils/middlewares/errorhandler.middleware";
 import responseHandler from "./utils/middlewares/responder.middleware";
-const apiRoutes = require("./routes/api"); // API routes
+
+const apiRoutes = require("./routes/api");
+import profileRoutes from "./routes/profile"
 
 dotenv.config();
 
@@ -48,6 +50,7 @@ function isAuthenticated(req: any, res: Response, next: NextFunction) {
 
 // Routes
 app.use("/api", apiRoutes); // Include API routes
+app.use("/profile" , profileRoutes);
 
 app.get("/login", (req: Request, res: Response) => {
   res.render("login", { title: "Algonauts" });

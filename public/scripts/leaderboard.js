@@ -35,7 +35,8 @@ const calculateStreak = (ProgressMatrixes, platformName) =>{
   );
 
   let streak = 0;
-
+  console.log(sortedDates, typeof sortedDates)
+  if(getFormatedDate(new Date()) != sortedDates[0]) return 0 ;
   for (const date of sortedDates) {
     if (dailyActivities[date] > 0) {
       streak++;
