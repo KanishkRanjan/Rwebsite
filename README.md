@@ -51,9 +51,9 @@ Contributions are welcome! If you have suggestions or improvements, please fork 
 
 ## Contact
 
-- **Email**: kanishka.ranjan.9@gmail.com
+- **Email**: kanishkaranjan17@gmail.com
 - **Portfolio**: [https://kanishk-chi.vercel.app/](https://kanishk-chi.vercel.app/)
-- **LinkedIn**: [Kanishk Ranjan](https://www.linkedin.com/in/kanishk-ranjan-b355b7229)
+- **LinkedIn**: [Kanishk Ranjan](https://www.linkedin.com/in/kanishk-ranjan)
 
 Feel free to explore the repository and reach out if you have any questions or feedback.
 ```
