@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const axios = require('axios');
+const axios_1 = __importDefault(require("axios"));
 const LEETCODE_GRAPHQL_URL = 'https://leetcode.com/graphql';
 // Function to fetch user data from LeetCode
 async function getLeetCodeData(username) {
@@ -16,7 +19,7 @@ async function getLeetCodeData(username) {
       }
     }`;
     try {
-        const response = await axios.post(LEETCODE_GRAPHQL_URL, {
+        const response = await axios_1.default.post(LEETCODE_GRAPHQL_URL, {
             query,
             variables: { username }
         });

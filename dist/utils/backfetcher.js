@@ -8,7 +8,6 @@ const sendFetchRequest = async (url, type, payload) => {
     }
     try {
         url = api_url + url;
-        console.log(url);
         const response = await fetch(url, {
             method: type || "GET",
             headers: {
@@ -17,6 +16,9 @@ const sendFetchRequest = async (url, type, payload) => {
             body: payload ? JSON.stringify(payload) : undefined,
         });
         if (!response.ok) {
+            console.log(url);
+            console.log(await response.json());
+            console.log(JSON.stringify(payload));
             throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
         }
         return await response.json();

@@ -27,7 +27,6 @@ const deleteProblem = async (req, res, next) => {
 exports.deleteProblem = deleteProblem;
 const addProblem = async (req, res, next) => {
     try {
-        console.log(req.body);
         let { name, problemIndex, contestId, tags, questionLink, difficulty, date } = req.body;
         if (date)
             date = getFormatedDate(new Date());
@@ -71,7 +70,6 @@ const getSolveCount = async (req, res, next) => {
         const userData = await user_model_1.default.find().select('ProgressMatrixes.codeforces post');
         for (let i = 0; i < userData.length; i++) {
             const extracted = userData[i].ProgressMatrixes.get('codeforces');
-            console.log(extracted);
             const apiUrl = `https://codeforces.com/api/user.status?handle=${extracted.username}`;
             try {
                 const response = await fetch(apiUrl);
@@ -86,13 +84,11 @@ const getSolveCount = async (req, res, next) => {
                     if (result[j].contestId === parseInt(contestId) && result[j].problem.index === problemIndex && result[j].verdict == "OK") {
                         if (userData[i].post == 'participant')
                             participantSolve++;
-                        // console.log(result[j]);
                         totalSolve++;
                     }
                 }
             }
             catch (error) {
-                //   console.error("Error fetching API:", error.message);
                 throw error;
             }
             (0, delay_1.default)(1000);
@@ -101,10 +97,6 @@ const getSolveCount = async (req, res, next) => {
     catch (error) {
         return next(new custom_error_1.default('Internal server error', 500));
     }
-    // let totalSolve:number = 0 ;
-    // let participantSolve:number = 0 ;
-    console.log(contestId, problemIndex);
-    console.log(totalSolve, participantSolve);
     res.status(200).send({ totalSolve, participantSolve });
 };
 exports.getSolveCount = getSolveCount;
